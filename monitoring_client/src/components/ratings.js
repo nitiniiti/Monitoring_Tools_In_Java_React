@@ -1,44 +1,57 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import axios from 'axios';
+import async from 'async';
 
 export class Ratings extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            tools: [
-                {
-                    "tool_name": "Grafana",
-                    "product_name": "Grafana Enterprise Grafana Cloud",
-                    "tool_type": "visualization_tool",
-                    "open_source": "Open Source + Paid",
-                    "community_support": "strong",
-                    "core_competency": "GO, C, Javascript",
-                    "features": " [\"Multiple visualization options\"]",
-                    "dashboard_capabilities": true,
-                    "installation": "Agentless",
-                    "environment_coverage": "Cloud + on-premise",
-                    "license_type": "enterprise",
-                    "pricing": "Need to contact Vendor",
-                    "support": "Paid",
-                    "cost": "Need to contact Vendor"
-                },
-                {
-                    "tool_name": "Grafana",
-                    "product_name": "Grafana Enterprise Grafana Cloud",
-                    "tool_type": "visualization_tool",
-                    "open_source": "Open Source + Paid",
-                    "community_support": "strong",
-                    "core_competency": "GO, C, Javascript",
-                    "features": " [\"Multiple visualization options\"]",
-                    "dashboard_capabilities": true,
-                    "installation": "Agentless",
-                    "environment_coverage": "Cloud + on-premise",
-                    "license_type": "enterprise",
-                    "pricing": "Need to contact Vendor",
-                    "support": "Paid",
-                    "cost": "Need to contact Vendor"
-                }
-            ]
+            ratings: []
+        }
+    }
+
+    componentDidMount() {
+
+        console.log(this.props.match.params);
+
+        if (this.props && this.props.match && this.props.match.params && this.props.match.params.toolId) {
+            axios.get('http://localhost:8000/api/v1/ratings/' + this.props.match.params.toolId).then((ratingResponse) => {
+                // const ratingData = ratingResponse.data;
+                this.setState({ ratings: [ratingResponse.data] });
+
+                axios.get('http://localhost:8000/api/v1/tools/' + ratingResponse.data.tool_id).then((toolResponse) => {
+                    console.log(toolResponse.data);
+                    ratingResponse.data.tool_name = toolResponse.data.tool_name;
+                    this.setState({ ratings: [ratingResponse.data] });
+                })
+
+            }).catch((err) => {
+                console.log("Error Occured");
+                console.log(err);
+            })
+        } else {
+            axios.get('http://localhost:8000/api/v1/ratings').then((ratingResponse) => {
+                // const ratingData = ratingResponse.data;
+                this.setState({ ratings: ratingResponse.data });
+
+                async.each(ratingResponse.data, (rating, callback) => {
+                    axios.get('http://localhost:8000/api/v1/tools/' + rating.tool_id).then((toolResponse) => {
+                        console.log(toolResponse.data);
+                        rating.tool_name = toolResponse.data.tool_name;
+                        callback(null);
+                    }).catch((err) => {
+                        console.log("Error Occured in fetching Tool Name");
+                        console.log(err);
+                        callback(null);
+                    })
+                }, (err) => {
+                    this.setState({ ratings: ratingResponse.data });
+                })
+            }).catch((err) => {
+                console.log("Error Occured");
+                console.log(err);
+            })
         }
     }
 
@@ -49,39 +62,56 @@ export class Ratings extends Component {
                     <thead>
                         <tr>
                             <th>Tool Name</th>
-                            <th>Product Name</th>
-                            <th>Tool Type</th>
-                            <th>Open Source/ Paid</th>
-                            <th>Community Support</th>
-                            <th>Core Competency</th>
-                            <th>Primary Features</th>
-                            <th>Dashboard Capabilities</th>
-                            <th>Installation/ Deployment</th>
-                            <th>Environment Coverage</th>
-                            <th>License Type</th>
-                            <th>Pricing</th>
-                            <th>Support</th>
-                            <th>Cost for Dummy Infra</th>
-                            <th />
+                            <th>Easy Configuration Wizard</th>
+                            <th>GUI Configuration</th>
+                            <th>Advanced Reporting</th>
+                            <th>Enhanced Visualizations</th>
+                            <th>Custom User Dashboards</th>
+                            <th>Custom Actions</th>
+                            <th>Notification Escalations</th>
+                            <th>Scheduled Reports</th>
+                            <th>Capacity Planning Reports</th>
+                            <th>Bulk-Modification Tools</th>
+                            <th>Audit Logging</th>
+                            <th>SLA Reports</th>
+                            <th>Predictive Analysis</th>
+                            <th>Code level insights and transaction tracing</th>
+                            <th>End user experience monitoring and synthetic transaction monitoring</th>
+                            <th>Application framework metrics like performance counters, JMX MBeans, etc.</th>
+                            <th>Real user monitoring (RUM)</th>
+                            <th>Integration with third-party tools</th>
+                            <th>Database/Server/Application monitoring</th>
+                            <th>Collect and correlate custom metrics</th>
+                            <th>Integrations and plugins</th>
+                            <th>Automated performance issue remediation</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state.tools.map(tool => (
-                            <tr key={tool.id}>
-                                <td>{tool.tool_name}</td>
-                                <td>{tool.product_name}</td>
-                                <td>{tool.tool_type}</td>
-                                <td>{tool.open_source}</td>
-                                <td>{tool.community_support}</td>
-                                <td>{tool.core_competency}</td>
-                                <td>{tool.features}</td>
-                                <td>{tool.dashboard_capabilities ? "Yes" : "No"}</td>
-                                <td>{tool.installation}</td>
-                                <td>{tool.environment_coverage}</td>
-                                <td>{tool.license_type}</td>
-                                <td>{tool.pricing}</td>
-                                <td>{tool.support}</td>
-                                <td>{tool.cost}</td>
+                        {this.state.ratings.map(rating => (
+                            <tr key={rating.id}>
+                                <td>{rating.tool_name}</td>
+                                <td>{rating.easy_configuration_wizard}</td>
+                                <td>{rating.gui_configuration}</td>
+                                <td>{rating.advance_reporting}</td>
+                                <td>{rating.enhanced_visualizations}</td>
+                                <td>{rating.custom_user_dashboards}</td>
+                                <td>{rating.custom_actions}</td>
+                                <td>{rating.notification_escalation}</td>
+                                <td>{rating.scheduled_reports}</td>
+                                <td>{rating.capacity_planning_reports}</td>
+                                <td>{rating.bulk_modification_tool}</td>
+                                <td>{rating.audit_logging}</td>
+                                <td>{rating.sla_reports}</td>
+                                <td>{rating.predictive_analysis}</td>
+                                <td>{rating.code_level_insights_transaction_tracing}</td>
+                                <td>{rating.end_user_experience_monitoring}</td>
+                                <td>{rating.aplication_framework_monitoring}</td>
+                                <td>{rating.real_user_monitoring}</td>
+                                <td>{rating.collect_correlate_custom_metrics}</td>
+                                <td>{rating.integration_with_third_party_tools}</td>
+                                <td>{rating.application_monitoring}</td>
+                                <td>{rating.integration_plugins}</td>
+                                <td>{rating.automation_performance_issue_remediation}</td>
                             </tr>
                         ))}
                     </tbody>

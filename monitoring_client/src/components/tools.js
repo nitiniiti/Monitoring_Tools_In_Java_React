@@ -3,62 +3,42 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as toolActions from '../actions/tools';
 import PropTypes from 'prop-types';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 export class Tools extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            tools: [
-                {
-                    "id": "1",
-                    "tool_name": "Grafana",
-                    "product_name": "Grafana Enterprise Grafana Cloud",
-                    "tool_type": "visualization_tool",
-                    "open_source": "Open Source + Paid",
-                    "community_support": "strong",
-                    "core_competency": "GO, C, Javascript",
-                    "features": " [\"Multiple visualization options\"]",
-                    "dashboard_capabilities": true,
-                    "installation": "Agentless",
-                    "environment_coverage": "Cloud + on-premise",
-                    "license_type": "enterprise",
-                    "pricing": "Need to contact Vendor",
-                    "support": "Paid",
-                    "cost": "Need to contact Vendor"
-                },
-                {
-                    "id": "2",
-                    "tool_name": "Grafana",
-                    "product_name": "Grafana Enterprise Grafana Cloud",
-                    "tool_type": "visualization_tool",
-                    "open_source": "Open Source + Paid",
-                    "community_support": "strong",
-                    "core_competency": "GO, C, Javascript",
-                    "features": " [\"Multiple visualization options\"]",
-                    "dashboard_capabilities": true,
-                    "installation": "Agentless",
-                    "environment_coverage": "Cloud + on-premise",
-                    "license_type": "enterprise",
-                    "pricing": "Need to contact Vendor",
-                    "support": "Paid",
-                    "cost": "Need to contact Vendor"
-                }
-            ]
+            tools: []
         }
     }
 
     componentDidMount() {
         console.log("Mounting Tools Component");
-        console.log(this.props.getTool);
-        const { getTool } = this.props;
-        getTool && getTool();
+        // console.log(this.props.getTool);
+        // const { getTool } = this.props;
+        // getTool && getTool();
+
+
+        // Start Temporary Code
+
+        axios.get('http://localhost:8000/api/v1/tools').then((res) => {
+            console.log(res.data);
+            this.setState({ tools: res.data });
+        }).catch((err) => {
+            console.log("Error Occured");
+            console.log(err);
+        })
+
+        // End Temporary Code 
     }
 
-    static propTypes = {
-        tools: PropTypes.array.isRequired,
-        getTools: PropTypes.func.isRequired
-    }
+    // static propTypes = {
+    //     tools: PropTypes.array.isRequired,
+    //     getTools: PropTypes.func.isRequired
+    // }
 
     render() {
         return (
@@ -86,7 +66,7 @@ export class Tools extends Component {
                     <tbody>
                         {this.state.tools.map(tool => (
                             <tr key={tool.id}>
-                                <td>{tool.tool_name}</td>
+                                <td><Link to={"/ratings/" + tool.id}>{tool.tool_name}</Link></td>
                                 <td>{tool.product_name}</td>
                                 <td>{tool.tool_type}</td>
                                 <td>{tool.open_source}</td>
@@ -111,7 +91,7 @@ export class Tools extends Component {
 
 
 const mapDispatchToProps = dispatch => {
-    return bindActionCreators(Object.assign({}, toolActions), dispatch);
+    return bindActionCreators(toolActions.getTool, dispatch);
 }
 
 const mapStateToProps = state => ({

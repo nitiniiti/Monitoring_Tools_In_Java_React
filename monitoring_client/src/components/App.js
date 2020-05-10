@@ -17,6 +17,7 @@ class App extends Component {
             <Header />
             <Switch>
               <Route exact path="/" component={Tools} />
+              <Route path="/ratings/:toolId" component={Ratings} />
               <Route path="/ratings" component={Ratings} />
             </Switch>
           </>

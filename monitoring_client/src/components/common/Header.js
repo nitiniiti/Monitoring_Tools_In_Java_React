@@ -22,6 +22,9 @@ export class Header extends Component {
                             <Link to="/" className="nav-link"><b>Tools</b></Link>
                         </li>
                         <li className="nav-item">
+                            <b className="nav-link">|</b>
+                        </li>
+                        <li className="nav-item">
                             <Link to="/ratings" className="nav-link"><b>Ratings</b></Link>
                         </li>
                     </ul>

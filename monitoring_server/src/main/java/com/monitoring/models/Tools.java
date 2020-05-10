@@ -1,8 +1,10 @@
 
 package com.monitoring.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -10,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity(name = "tools")
@@ -55,6 +58,18 @@ public class Tools {
     private String support;
 
     private String cost;
+
+    @OneToOne(mappedBy = "tool", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    @JsonIgnore
+    private Ratings rating;
+
+    public Ratings getRating() {
+        return this.rating;
+    }
+
+    public void setRating(Ratings rating) {
+        this.rating = rating;
+    }
 
     public Long getId() {
         return this.id;
