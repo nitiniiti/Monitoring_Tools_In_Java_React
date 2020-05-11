@@ -86,6 +86,19 @@ export class Ratings extends Component {
         }
     }
 
+
+    deleteRating = (ratingId) => {
+        console.log(ratingId);
+        console.log("Delete clicked");
+        axios.delete('http://localhost:8000/api/v1/ratings/' + ratingId).then((res) => {
+            console.log(res);
+            this.setState({ ratings: this.state.ratings.filter((rating) => { return rating.id !== ratingId }) });
+        }).catch((err) => {
+            console.log("Error Occured while deleting");
+            console.log(err);
+        })
+    }
+
     render() {
         return (
             <>
@@ -147,7 +160,7 @@ export class Ratings extends Component {
                                     <td>{rating.integration_plugins}</td>
                                     <td>{rating.automation_performance_issue_remediation}</td>
                                     <td><Link to={"/ratings/edit/" + this.state.toolId}><button type="button" className="btn btn-primary">Edit</button></Link></td>
-                                    <td><button type="button" className="btn btn-danger">Delete</button></td>
+                                    <td><button type="button" className="btn btn-danger" onClick={() => this.deleteRating(rating.id)}>Delete</button></td>
                                 </tr>
                             ))}
                         </tbody>

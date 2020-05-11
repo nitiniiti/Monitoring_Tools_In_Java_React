@@ -48,11 +48,13 @@ export class EditTool extends Component {
     }
 
     updateTool = (event) => {
+        event.preventDefault();
         let toolId = this.state.toolId;
         if (toolId) {
             axios.put('http://localhost:8000/api/v1/tools/' + toolId, this.state.tool).then((res) => {
                 console.log(res);
                 alert("Tool Updated");
+                this.props.history.push('/');
             }).catch((err) => {
                 console.log("Error Occured");
                 console.log(err);
@@ -63,32 +65,33 @@ export class EditTool extends Component {
                 alert("Tool Saved");
                 let rating = {
                     tool_id: res.data.id,
-                    easy_configuration_wizard: null,
-                    gui_configuration: null,
-                    advance_reporting: null,
-                    enhanced_visualizations: null,
-                    custom_user_dashboards: null,
-                    custom_actions: null,
-                    notification_escalation: null,
-                    scheduled_reports: null,
-                    capacity_planning_reports: null,
-                    bulk_modification_tool: null,
-                    audit_logging: null,
-                    sla_reports: null,
-                    predictive_analysis: null,
-                    code_level_insights_transaction_tracing: null,
-                    end_user_experience_monitoring: null,
-                    aplication_framework_monitoring: null,
-                    real_user_monitoring: null,
-                    collect_correlate_custom_metrics: null,
-                    integration_with_third_party_tools: null,
-                    application_monitoring: null,
-                    integration_plugins: null,
-                    automation_performance_issue_remediation: null
+                    easy_configuration_wizard: 1,
+                    gui_configuration: 1,
+                    advance_reporting: 1,
+                    enhanced_visualizations: 1,
+                    custom_user_dashboards: 1,
+                    custom_actions: 1,
+                    notification_escalation: 1,
+                    scheduled_reports: 1,
+                    capacity_planning_reports: 1,
+                    bulk_modification_tool: 1,
+                    audit_logging: 1,
+                    sla_reports: 1,
+                    predictive_analysis: 1,
+                    code_level_insights_transaction_tracing: 1,
+                    end_user_experience_monitoring: 1,
+                    aplication_framework_monitoring: 1,
+                    real_user_monitoring: 1,
+                    collect_correlate_custom_metrics: 1,
+                    integration_with_third_party_tools: 1,
+                    application_monitoring: 1,
+                    integration_plugins: 1,
+                    automation_performance_issue_remediation: 1
                 }
                 axios.post('http://localhost:8000/api/v1/ratings/', rating).then((res) => {
                     console.log(res);
                     alert("Rating Saved");
+                    this.props.history.push('/');
                 }).catch((err) => {
                     console.log("Error Occured");
                     console.log(err);

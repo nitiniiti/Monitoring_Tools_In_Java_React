@@ -35,6 +35,17 @@ export class Tools extends Component {
         // End Temporary Code 
     }
 
+    deleteTool = (toolId) => {
+        console.log(toolId);
+        console.log("Delete clicked");
+        axios.delete('http://localhost:8000/api/v1/tools/' + toolId).then((res) => {
+            console.log(res);
+            this.setState({ tools: this.state.tools.filter((tool) => { return tool.id !== toolId }) });
+        }).catch((err) => {
+            console.log("Error Occured while deleting");
+            console.log(err);
+        })
+    }
     // static propTypes = {
     //     tools: PropTypes.array.isRequired,
     //     getTools: PropTypes.func.isRequired
@@ -85,7 +96,7 @@ export class Tools extends Component {
                                     <td>{tool.support}</td>
                                     <td>{tool.cost}</td>
                                     <td><Link to={"/tool/" + tool.id}><button type="button" className="btn btn-primary">Edit</button></Link></td>
-                                    <td><button type="button" className="btn btn-danger">Delete</button></td>
+                                    <td><button type="button" className="btn btn-danger" onClick={() => this.deleteTool(tool.id)}>Delete</button></td>
                                 </tr>
                             ))}
                         </tbody>
