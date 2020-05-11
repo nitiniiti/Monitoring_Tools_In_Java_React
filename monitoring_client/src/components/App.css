@@ -57,6 +57,14 @@ body {
   background: linear-gradient(#d5e3f1 15%, #fffbd9 70%, #ffdfcb 94%);
 }
 
+.tableWidth {
+  overflow: scroll;
+}
+
+.table {
+  border-collapse: collapse;
+  width: 90%;
+}
 /* h1 {
   font-size: 2em;
 } */

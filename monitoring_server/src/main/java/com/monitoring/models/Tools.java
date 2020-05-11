@@ -43,7 +43,7 @@ public class Tools {
     @Column(columnDefinition = "TEXT")
     private String features;
 
-    private boolean dashboard_capabilities;
+    private String dashboard_capabilities;
 
     @Column(columnDefinition = "TEXT")
     private String installation;
@@ -58,18 +58,6 @@ public class Tools {
     private String support;
 
     private String cost;
-
-    @OneToOne(mappedBy = "tool", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
-    @JsonIgnore
-    private Ratings rating;
-
-    public Ratings getRating() {
-        return this.rating;
-    }
-
-    public void setRating(Ratings rating) {
-        this.rating = rating;
-    }
 
     public Long getId() {
         return this.id;
@@ -135,11 +123,11 @@ public class Tools {
         this.features = features;
     }
 
-    public boolean isDashboard_capabilities() {
+    public String isDashboard_capabilities() {
         return this.dashboard_capabilities;
     }
 
-    public void setDashboard_capabilities(boolean dashboard_capabilities) {
+    public void setDashboard_capabilities(String dashboard_capabilities) {
         this.dashboard_capabilities = dashboard_capabilities;
     }
 

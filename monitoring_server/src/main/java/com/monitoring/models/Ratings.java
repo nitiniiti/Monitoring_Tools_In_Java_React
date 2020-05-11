@@ -24,18 +24,6 @@ public class Ratings {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
-    private Tools tool;
-
-    public Tools getTool() {
-        return this.tool;
-    }
-
-    public void setTool(Tools tool) {
-        this.tool = tool;
-    }
-
     private Long tool_id;
 
     private Integer easy_configuration_wizard;
