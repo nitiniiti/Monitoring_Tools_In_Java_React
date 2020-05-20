@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Header } from './common/Header';
-import { Tools } from './tools/tools';
+import Tools from './tools/tools';
 import Ratings from './ratings/ratings';
 import { Provider } from 'react-redux';
 import store from '../store';
